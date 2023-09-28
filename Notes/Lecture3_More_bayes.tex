@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+ \usepackage[margin=1in]{geometry}
+ \usepackage{amsmath}
+ \usepackage{hyperref}
+ \usepackage{algorithm}
+ \usepackage{algorithmic}
+\begin{document}
+
+\title{PHYS 218 Lecture Notes}
+\author{Zhiyuan Song}
+\maketitle
+
+\section{Bayesian Statistics}
+\subsection{Likelihood}
+In some cases, we have a discrete probability of each event, $p^i_f$, and finding overall statistics is a matter of computing binomial probabilities. This is in some ways an ideal case for Bayesian statistics: we wrote down a probability distribution function and then we modelled it. However, even in this case, in practice computation may be difficult for large numbers of events.\\
+More commonly, we have continuous parameters in a model. In practice, we often use a multi-D $\chi^2$ or Gaussian likelihood:
+\begin{equation}
+	\mathcal{L} = P(D|M) = exp(-\sum_{data}\frac{(d_i-m)^2}{\sigma_i^2})
+\end{equation}
+$d_i$ is datapoint, $\sigma_i$ is error on each point and m is model.\\
+If $d_i$ are independent, more generally, the covariance matrix is:
+\begin{displaymath}
+\mathbf{C} =
+\left( \begin{array}{cccc} \sigma_1^2 & \\
+& \sigma^2_2 & &\\
+& & \ddots & \\
+& & & \sigma^2_n
+\end{array} \right) \\
+\end{displaymath}
+A more general likelihood is:
+\begin{equation}
+	-ln\mathcal{L} = \sum (d_i - m)^T C_{ij}^{-1} (d_j -m)
+\end{equation}
+where $C_{ij}^{-1}$ is the inverse covariance metrix. It helps if C is diagonal. Generally, people assume that C is independent of m.\\
+There is also a normalisation factor: $\frac{1}{\sqrt{2\pi^n (det C)}}$, which few people compute because the posterior is already normalised.\\
+Note: This Gaussian likelihood is wildly used but it is an approximation!
+
+\subsection{Prior}
+In principle, prior can be anything. However, there are two types of priors that useful.\\
+1. We can use the prior to combine old and new experiment.\\
+For example, $P(M|D_2) \propto P(D_2|M)P(M)$. $P(M)$ is set using old data. Then $P(M) = P(M|D_1) = P(D_1|M)P(M)$.
+For example, we may have an experiment which measures $\frac{G}{R^2}$ and one which measures G. We can use experiment 2 to replace a prior on G in experiment 1 and thus get R. Make sure you use a prior from an experiment which has been done correctly! Using false prior information can lead to bad results.\\
+2. Ultimately, we need a starting point, for which we use a minimal information prior. Good choices are a flat, uniform prior: $P(p_i = P_i) = \frac{1}{P_{max} - P_{min}}$. Or a wide Gaussian prior around an order of magnitude estimate.
+
+\end{document}

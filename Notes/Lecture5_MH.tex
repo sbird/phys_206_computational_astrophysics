@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Physics 218: Fundamentals of Astrophysics}
+\author{Niusha Ahvazi }
+\date{October 18, 2019}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+
+\begin{document}
+
+\maketitle
+
+\section{MCMC Algorithm}
+\subsection{Original Metropolis-Hasting}
+Build a Markov chain with a steady state of the PDF.\\
+\[PDF: P(x_i)\]
+\[F: y(x_i)\rightarrow y(x_{i+1})\]\\
+Probabilistically: \[P(x_i)	\leftrightarrow P(x_{i+1})\]\\
+So you have a list of samples; which you may histogram for a PDF.\\
+\\
+Start with a sample, evaluate $\mathcal{L}$ at a new position chosen according to a pre-specified \underline{proposal distribution}.\\
+\\
+Accept or reject according to some rules.\\
+\\
+Once updated you select new points based on the existing samples.\\
+Say we have current list of samples \( \ x_t \), want \( \ x_{t+1} \).\\
+pick  \( \ x' \) at random from proposal distribution  \( \ g(x'|x_t) \)\\
+compute\\
+\[a=\frac{P(x')}{P(x_t)}\frac{g(x_t|x')}{g(x'|x_t)}\]\\
+The new point is accepted with probability:\[x_{i+1}=x'\,\, ,\,\,p=min(1,a)  \]\\
+Or rejected with \( p=1-a \), where \( x_{t+1}=x_t\).\\
+\\
+The trick is picking \( g(x'|x_t^*) \), the proposal.\\ ideally \(g=p\)\\
+\\
+Generally use a multi-Dimensional Gaussian\\
+\[ g \sim exp(-(\frac{\vec{x}-\vec{\mu}}{\vec{\sigma}})^2)\]\\
+\(\sigma\) is tuned to have a \(30\%\ \) acceptance fraction.\\
+too low means the chain has few samples and is exploring too much.Too high means the chain has too little exploration and is stuck at a local value.\\
+\\
+\( \sigma \) is tuned in a "burn-in" phase, where you change it rapidly and then discard the samples to avoid a biased initial p.d.f.\\
+\\
+\textbf{\underline{Pros:}}\\
+1)\,simple to implement\\
+2)\,"Quick": new samples are fast\\
+3)\,underlies other methods\\
+4)\,minimal assumption: robust\\
+\\
+\textbf{\underline{Cons:}}\\
+1)\,Stronger assumptions can have many fewer samples\\
+2)\,slow for curvy degeneracy\\
+3)\,Hard to parallelize\\
+4)\,correlation between states\\
+5)\,High-Dim. are tough\\
+\\
+Why high-D is hard:\\
+\[ \frac{V_{sphere}}{V_{Cube}}=\frac{\frac{2r^d\pi^{\frac{d}{2}}}{d \Gamma(\frac{d}{2})}}{(2r)^d}=\frac{\pi^{\frac{d}{2}}}{d2^{d-1}\Gamma(\frac{d}{2})}\rightarrow 0\]
+\end{document}
