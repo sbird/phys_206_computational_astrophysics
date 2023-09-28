@@ -5,15 +5,15 @@
 
 \begin{document}
 
-\title{PHYS 218 Lecture Notes}
+\title{PHYS 206 Lecture Notes}
 \author{Simeon Bird}
 \maketitle
 
-\section{Version Control and Git}
+\section{Version Control}
 
-Version control is an automated system for keeping track of the history of your code. It allows you to avoid losing code in disasters, and it allows you to revert to known-good versions. It also allows you to find old code using google, which is better than your memory. The leading version control system today is git, originally written by Linus Torvalds to solve an urgent problem. Git is a collection of small primitives strung together in versatile scripts. It is extremely powerful.
+Version control is an automated system for keeping track of the history of your code. It allows you to avoid losing code in disasters, and it allows you to revert to known-good versions. \textbf{Use version control}.
 
-The place to learn more is: \url{https://git-scm.com/book/en/v2}
+Today's version control system is git, originally written by Linus Torvalds to solve an urgent problem. Git is a collection of small primitives strung together in versatile scripts. It is extremely powerful\footnote{A good reference is \url{https://git-scm.com/book/en/v2}, but there are several million tutorials around.}. In practice, everyone uses it through github, which has a fancy user interface.
 
 Git provides a built-in train to move your changes from a local file to the rest of the world:
 
@@ -21,10 +21,10 @@ Git provides a built-in train to move your changes from a local file to the rest
  \item[change$\rightarrow$] git add
  \item[staging$\rightarrow$] git commit
  \item[local commit$\rightarrow$] git push
- \item[remote commit!]
+ \item[github!]
 \end{enumerate}
 
-Each change committed to version control is stored in a list with a commit hash, like $abcde1234$. This is a unique identifier storing the state of a code.
+Each change committed to version control is stored in a list with a commit hash, like \texttt{abcde1234}. This is a unique identifier storing the state of a code.
 
 You may use:
 \begin{enumerate}
@@ -38,7 +38,9 @@ In git, branches are cheap and easy. This is the main reason git is the leading 
 
 To create a new branch, type ``git branch newname''. To switch to it, use ``git checkout newname'' and to switch back use ``git checkout master''. To incorporate the contents of one branch into the current branch, do ``git merge newname''
 
-\section{Python Tips}
+\section{Python}
+
+I'm going to mostly assume that you know python already.
 
 \begin{enumerate}
  \item Use functions: ideally keep them short, 4-5 lines, and make each one have a single purpose.
@@ -46,12 +48,12 @@ To create a new branch, type ``git branch newname''. To switch to it, use ``git 
  \item Avoid global variables.
  \item Use assertions to check that your results are sane.
  \item Use the standard libraries where possible
- \item Use Python 3
+ \item Use tests
  \item Use keyword arguments liberally for clarity
  \item Use \_ for functions not intended to be used outside, and for unused variables
  \item Use pint to automatically check your units
- \item Write tests, small self-contained functions that run your code and check it gives a consistent answer. A common python testing framework is nosetests.
- \item If you wish to write python that is fast, try to avoid for loops. Use numpy functions if you can, and list comprehensions if you can't.
+ \item Write tests, small self-contained functions that run your code and check it gives a consistent answer. A common python testing framework is pytest.
+ \item Try to keep it simple.
 \end{enumerate}
 
 
