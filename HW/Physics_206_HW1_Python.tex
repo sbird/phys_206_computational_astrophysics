@@ -1,0 +1,54 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, multicol, array, hyperref}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\newenvironment{segment}[2][]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\begin{document}
+
+\title{Problem Set 1: Python and git}
+\author{Phys 206: Computational Astrophysics}
+\maketitle
+
+\begin{problem}{1.0 Github (4)}
+Create a fork of the repo here: \url{https://github.com/sbird/phys218_example}
+ and clone it to your machine. Submit your answers to these problems as a github pull request to this repo.
+\end{problem}
+
+\begin{problem}{1.1 Cleanups (10)}
+Edit this file: \url{https://github.com/sbird/phys218_example/blob/master/power_specs.py}
+until running pylint on it produces no errors or warnings. You may ignore the warnings of the form W0621: Redefining name 'X' from outer scope (line Y) (redefined-outer-name). You may also ignore ``remarks'' and ``comments''. If code refers to a non-existent method or object you may simply delete it.
+
+Hint: You may use search and replace to fix the whitespace issues.
+\end{problem}
+
+\begin{problem}{1.2 Find the bug (6)}
+Three bugs have been introduced in:
+
+\url{https://github.com/sbird/phys218_example/blob/master/pbhmergers.py}
+
+Find them!
+\end{problem}
+
+\begin{problem}{1.3 Writing python (10)}
+
+a) Write a python script, using pint, which finds the Schwarzchild radius of the Sun, in m.
+%b) Using the ``halo\_mass\_function.py'' script, write a python function to compute the total number
+%of halos at $z=0$ (and with the default cosmological parameters) with a mass above $10^{12} M_\odot$, by integrating  according to one of the listed halo mass function formulae.
+
+b) Write a simple routine to multiply two matrices together in python. Write one routine using nested for loops, one using a list comprehension, and one using the built-in numpy matrix multiplication routines.
+
+c) Write a simple test for the above routine that multiplies a large matrix with its inverse to obtain the identity. Use this test to evaluate how fast each of the routines in (b) are.
+\end{problem}
+
+Total: 36
+
+\end{document}
