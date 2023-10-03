@@ -1,21 +1,35 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 
-\title{Physics 218: Fundamentals of Astrophysics}
-\author{Niusha Ahvazi }
+\title{Physics 206: Computational Astrophysics}
+% \author{Niusha Ahvazi }
 \date{October 18, 2019}
 
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{xcolor}
 
+\newcommand{\Lc}{$\mathcal{L}$}
 
 \begin{document}
 
 \maketitle
 
-\section{MCMC Algorithm}
-\subsection{Original Metropolis-Hasting}
+\section{Markov Chain Monte Carlo}
+
+The problem of MCMC is to sample a function well enough to draw a graph of errors. A simple way to do this is to sample at random or on a grid: if we generate enough random samples we will eventually find the maximum of the function. To make this concrete, for a likelihood, \Lc($x_{i}$), you have $x_{i}$ at random or $x_{i} = (\frac{i}{N}, \frac{i}{N}, \frac{i}{N})$
+
+[Random sampling can be slow to fully map the \Lc, but if \Lc\ is pathological, random sampling may be the best you can do: other sampling methods are implicitly making assumptions about the smoothness of \Lc.]
+
+We can do better by trying to find local peaks of the likelihood: we use our existing information about the state of the function to inform our random choices about where to go next.
+
+\medskip
+
+\noindent In practice, the sampler we will use is pymc.
+
+\medskip
+
+\subsection{Metropolis-Hasting}
 Build a Markov chain with a steady state of the PDF.\\
 \[PDF: P(x_i)\]
 \[F: y(x_i)\rightarrow y(x_{i+1})\]\\
