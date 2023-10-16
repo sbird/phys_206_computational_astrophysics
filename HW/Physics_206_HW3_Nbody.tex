@@ -1,0 +1,53 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, multicol, array, hyperref}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\newenvironment{segment}[2][]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\begin{document}
+
+\title{Problem Set 3: N-Body simulations}
+\author{Phys 206: Computational Astrophysics}
+\maketitle
+
+\begin{problem}{3.0 Run an MP-Gadget Simulation (20)}.
+a) Download and compile the MP-Gadget code for your laptop. This requires either: Mac, Linux or the Ubuntu Linux app from the windows store.
+
+You are now going to run a small N-body simulation containing only dark matter. The example parameters in examples/dm-only can be used as a starting point for your simulation. The simulation will have $64^3$ dark matter particles (you are welcome to try more if you have a powerful computer). The size of the box should be $150$ Mpc/h. There should be no gas particles. Please also disable the radiation background and set Omega0 $= 1$ so that this is a pure matter universe.
+
+b) Generate initial conditions.
+
+c) Run the simulation, ideally to $z=0$, but as far as you can if your computer is slow.
+
+d) Plot the power spectra and halo mass functions for the final redshift, and initial redshift and two intermediate redshifts. How do these evolve?
+
+e) Use the make\_class\_power.py script to create linear theory power spectra for the same redshifts used in part d), and compare them to the power spectra output by the MP-Gadget code.
+\end{problem}
+
+\begin{problem}{3.1 Write your own N-body code (20)}.
+In this problem we will write our own N-body code. You may write in python (or any other language that you prefer), and the code need use only the easiest algorithms (although you are welcome to implement a more complex algorithm if you prefer).
+
+a) Write the code to compute forces. You can use direct summation.
+
+b) Use the bigfile python module to load the bigfile output of the initial conditions generator from problem 3.0.
+
+c) Implement the kick-drift-kick symplectic time integrator for time integration.
+
+d) Compare the results to those of MP-Gadget. What are the cosmological scale factors?
+\end{problem}
+
+%\begin{problem}{3.5 MCMC using the Gelman-Rubin criterion (6)}
+%Perform the problem in Section 2.3 using $4$ independent ensembles. After $10$ samples from each ensemble, compute the Gelman-Rubin criterion explained in class. \textbf{Do not compute it using individual walkers!} How quickly does the G-R criterion converge to $<1.01$? Is it a stronger or weaker convergence criterion than the autocorrelation time?
+%\end{problem}
+
+Total: 40
+
+\end{document}
