@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.8in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{18pt}
+
+\newcommand{\Lc}{$\mathcal{L}$}
+
+
+\title{ASTR 206 Lecture Notes}
+\author{Simeon Bird}
+% \date{October 14, 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Gravitational Simulations}
+
+This section is about N-Body codes, or the problem of simulating gravitational interactions. An important difference from other types of physical simulations is that gravity is a non-local interaction, which significantly changes the types of simulation models that can be used. We are mostly interested in the problem of simulating structure formation, where an initially uniform density dark matter fluid in an expanding background is allowed to evolve under self-gravity. However, first we should talk about the (slightly different) problem of modelling the evolution of small clusters of stars.
+
+In this problem:
+
+\begin{enumerate}
+ \item Each star is a point particle.
+ \item The force on each star is given by Newtonian gravity. For particle $j$ the force from other particles $i \neq j$ is:
+\end{enumerate}
+\begin{equation}
+ a_j = \Sigma_i \frac{G M_i}{\left(r_i - r_j\right)^2}
+\end{equation}
+
+Why can we treat a star as a point particle? Because even in the densest cluster the distance between stars is usually much larger than the size of a star.
+
+It is well known that a 2-body problem is solvable analytically, but the 3-body problem is not, except under very special conditions. It is furthermore chaotic: the final state depends sensitively on the initial positions and velocities. The N-body problem is also analytically intractable.
+
+\subsection{Forces}
+
+Let's first talk about fast ways to compute the forces. The obvious algorithm is something like:
+\begin{verbatim}
+ for j in particles:
+    acc_j = 0
+    for i in particles:
+      if i != j:
+        acc_j += G M_i / (r_i - r_j)^2
+\end{verbatim}
+but this is slow for large numbers of particles: for N particles this needs $N \times N$ operations and thus is said to be $O(N^2)$. Notice that this notation drops a constant prefactor: it could be $2 N^2$, $3 N^2$, or even $200 N^2$ operations, and it does not count how fast the operation is. Nevertheless, when $N \sim 10^{12}$, the cost is large.
+
+The first N-body simulation was performed by Eric Holmberg in 1941. The forces were computed using O(N) effort by placing light bulbs in a room and computing accelerations using light fluxes onto a photon cell. The bulbs were then moved by hand.
+
+\subsection{Timestepping}
+
+We also need a discrete timestepping rule to move the system from time $t_i$ to time $t_{i+1} = t_i + \delta t$. This is a 6D system, 3 position variables ($x_i$) and 3 velocity variables ($v_i$), moving under Hamiltonian dynamics. A reasonable choice might seem to be:
+\begin{align}
+v_{i+1} &= v_i + a_i \delta t \\
+x_{i+1} &= x_i + v_i \delta t
+\end{align}
+but this is in fact a terrible choice!
+
+The gravitational system follows energy-conserving Hamiltonian dynamics. Because it is not robust to non-Hamiltonian perturbations, the discrete timestepping rule must also follow Hamiltonian dynamics, and so each step should preserve energy. The best timestep is the \textbf{leapfrog}.
+
+The trick is to define two operators for the gravitational system, one which evolves the kinetic term (the ``kick'', $K$) and one which evolves the position term (the ``drift'', $D$). Each of these is individually energy preserving, and we apply them in turn.
+
+\begin{align}
+ K(\delta t): v_i &\to v + a \delta t \\
+ D(\delta t): x &\to x + v \delta t \\
+\end{align}
+
+The full timestep is kick-drift-kick, which splits the kick into two and is:
+\begin{align}
+ K(\delta t/2) D(\delta t) K(\delta t/2) \\
+\end{align}
+Notice that when the drift is applied the velocity that is used is evaluated at $t + \delta t /2$. It would not be consistent to examine the energy of the system in the middle of the step, as the velocity and positions of the particles are at different times.
+
+Choosing timestepping schemes which preserve energy is a good idea in computational astrophysics. The timestep itself can be set using multiples of the local dynamic time, so that particles with larger acceleration changes have smaller timesteps.
+
+\subsection{Binary Formation}
+
+A common feature of gravitational systems is the formation of binaries. One mechanism is three body interactions. Here one of the objects takes away the angular momentum of the system, leaving the other two bound. If the binary is tight, the timestep needed to evolve it is small, and thus many more forces must be worked out. This is especially wasteful as the evolution of an isolated binary has an analytic solution. Some codes detect isolated binary systems and evolve them forward using the analytic solution. Many high performance codes allow the timesteps for each particle to be set individually, so that the binary does not slow down the whole simulation.
+
+\section{Structure Formation}
+
+\subsection{Some Literature}
+
+Springel 2005, Gadget-2: \url{https://arxiv.org/abs/astro-ph/0505010}
+
+Aarseth, Sverre ``Gravitational N-body Simulations'' \url{https://doi.org/10.1017/CBO9780511535246}
+\end{document}
