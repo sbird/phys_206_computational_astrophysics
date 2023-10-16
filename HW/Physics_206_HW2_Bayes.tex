@@ -1,0 +1,75 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb, graphicx, multicol, array, hyperref}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\newenvironment{segment}[2][]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]}{\end{trivlist}}
+
+\begin{document}
+
+\title{Problem Set 2: Bayesian Probability}
+\author{Phys 206: Computational Astrophysics}
+\maketitle
+
+\begin{problem}{2.0 Advanced Monty Hall (6)}.
+Imagine that a game show host shows you $10$ doors, one of which has a prize behind it. You pick a door and the game show host opens three of the others, revealing they have no prizes behind them.
+
+a) Compute the probability that each remaining door has a prize behind it.
+
+b) Now imagine that the game show host destroys the doors, without revealing whether or not there was a prize behind them. Now what is the probability that each remaining door has a prize?
+
+c) Imagine that the game show host follows the procedure in (a), but reveals that as well as the prize door, there is a penalty door, with equal but opposite value to the prize. Three doors are opened, revealing neither prize nor penalty. If given the option, should you switch your choice of door?
+\end{problem}
+
+\begin{problem}{2.1 Simpson's Paradox (6)}.
+Dogs and cats compete in different sports, long jump and running. If they perform well in either sport, they receive a treat. There are a total of $8000$ applicants and $2100$ of them receive a prize. By species this breaks down into $5000$ dogs entering the competition with $3000$ cats: $1500$ dogs get a treat, while $600$ cats do.
+
+a) Compute the overall probability of receiving a prize.
+
+b) Assume a model in which both cats and dogs are awarded prizes at random with a probability equal to the overall probability of receiving a prize. You may assume that the prizes are Normally distributed as the number of events is large. What is the probability of the difference between the number of cats awarded prizes and the number of dogs awarded prizes being at least as large as observed?
+
+c) The judges in the long jump competition are substantially more generous than in the running competition. $4000$ dogs entered the long-jump, while $1000$ entered the running. By contrast, $1200$ cats entered the long-jump while $1800$ cats entered the running. Compute the respective probabilities of the long-jump and running judges awarding a prize necessary to best explain the above numbers.
+\end{problem}
+
+\begin{problem}{2.2 Probability Calculation from Genetics (6)}
+Suppose that in each individual of a large population there is a pair of genes, each of which can be either x or X, that controls eye colour: this with xx have blue eyes, while heterozygotes (those with Xx or xX) and those with XX have brown eyes. The proportion of blue-eyed individuals is $p^2$ and of heterozygotes is $2 p (1-p) $, where $0 < p < 1$. Each parent transmits one of its own genes to the child; if a parent is a heterozygote, the probability that it transmits the gene of type X is $1/2$.
+
+a) Assuming random mating, show that among brown-eyed children of brown-eyed parents, the expected proportion of heterozygotes is $2p/(1+2p)$.
+
+b) Suppose Judy, a brown-eyed child of brown-eyed parents marries a heterozygote, and they have $n$ children, all brown-eyed. Find the posterior probability that Judy is a heterozygote and the probability that her first grandchild has blue eyes.
+\end{problem}
+
+\begin{problem}{2.3 Basic MCMC (6)}
+Install the ``pymc'' sampler in python using the instructions here\footnote{\url{https://www.pymc.io/welcome.html}}. Work through the PyMC line-fitting linear regression tutorial\footnote{\url{https://www.pymc.io/projects/docs/en/latest/learn/core_notebooks/GLM_linear.html}} until you have 1D marginalised posterior plots.
+
+a) Make a corner plot (PyMC calls this a pair plot)\footnote{\url{https://python.arviz.org/en/latest/examples/plot_pair_kde.html}}, that is a series of histograms for each pair of 2 parameters, using arviz. Exhibit the corner plot and the 95\% marginalised confidence intervals on the parameters.
+
+b) Compute the autocorrelation time for this sampling problem and show how many samples are required to achieve $10$ autocorrelation times. Compare this to the visual convergence of the samples in the parameter space from part a).
+
+c) Exhibit the corner plot and confidence intervals from a short, unconverged chain with only enough samples to reach $2$ autocorrelation times. Explain how this chain differs from the fully converged one.
+\end{problem}
+
+\begin{problem}{2.4 MCMC with different priors (6)}
+The above example used normally distributed priors on slope, intercept and the error. In this example we will consider what happens when you use different priors.
+
+a) Run the same chain with the default priors, but increase $\sigma$ by a factor of $4$ for the normally distributed parameters. Sample the chain and compute the confidence intervals and show the corner plot. Assess the level of difference from your answer to Problem 2.3.
+
+b) Run the same chain with uniform priors on all values. Pick what seems like a reasonable range for each parameter. Sample the chain and compute the confidence intervals and show the corner plot. Assess the level of difference from your answer to Problem 2.3.
+
+c) Return to the default priors. We will now re-sample the original data so that the true values are several sigma from the priors. Sample for ``true intercept'' of $80$, and ``true slope'' of $-80$. Perform some initial samples for the chain (you need not attempt to achieve convergence). Compute the confidence intervals and show the corner plot. Comment on the effects of priors that assign a low probability to the true answer.
+\end{problem}
+
+%\begin{problem}{2.5 MCMC using the Gelman-Rubin criterion (6)}
+%Perform the problem in Section 2.3 using $4$ independent ensembles. After $10$ samples from each ensemble, compute the Gelman-Rubin criterion explained in class. \textbf{Do not compute it using individual walkers!} How quickly does the G-R criterion converge to $<1.01$? Is it a stronger or weaker convergence criterion than the autocorrelation time?
+%\end{problem}
+
+Total: 36
+
+\end{document}
