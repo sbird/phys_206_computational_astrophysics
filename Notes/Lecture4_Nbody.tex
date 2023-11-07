@@ -60,12 +60,48 @@ We also need a discrete timestepping rule to move the system from time $t_i$ to 
 \begin{align}
 v_{i+1} &= v_i + a_i \delta t \\
 x_{i+1} &= x_i + v_i \delta t
+\label{eq:euler}
 \end{align}
 but this is in fact a terrible choice!
 
-The gravitational system follows energy-conserving Hamiltonian dynamics. Because it is not robust to non-Hamiltonian perturbations, the discrete timestepping rule must also follow Hamiltonian dynamics, and so each step should preserve energy. The best timestep is the \textbf{leapfrog}.
+The gravitational system follows energy-conserving Hamiltonian dynamics. Because it is not robust to non-Hamiltonian perturbations, the discrete timestepping rule must also follow Hamiltonian dynamics, and so each step should preserve energy. Why does this choice not preserve energy?
 
-The trick is to define two operators for the gravitational system, one which evolves the kinetic term (the ``kick'', $K$) and one which evolves the position term (the ``drift'', $D$). Each of these is individually energy preserving, and we apply them in turn.
+More precisely, the thing that needs to be conserved is phase space volume. We can define a Hamiltonian in terms of canonical coordinates $p = m v$ and $x$:
+\begin{equation}
+ H = \frac{1}{2} \frac{p^2}{m} + \Phi (x)
+\end{equation}
+where $\Phi$ is the gravitational potential.
+Then we have the dynamics:
+\begin{align}
+ \dot{x} &= \frac{\partial H}{\partial p} = \frac{p}{m}\\
+ \dot{p} &= - \frac{\partial H}{\partial x} = - \frac{\partial \Phi}{\partial x}\\
+\end{align}
+Conserving phase space volume is written as $dp \times dx = 0$ and can be understood as ``close trajectories stay close''.
+
+The Euler method from Eq.~\ref{eq:euler} can be written as a rule from (p,x) to (p', x'):
+\begin{align}
+\begin{pmatrix}
+ p' \\
+ x'
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & \frac{\delta t}{x} \frac{\partial H}{\partial x} \\
+\delta t & 1 \\
+\end{pmatrix}
+.
+\begin{pmatrix}
+ p \\
+ x
+\end{pmatrix}
+\end{align}
+and $(p' - p)\times (x' - x)$ is not zero.
+
+The fix to this is to use a \textbf{symplectic integrator}, notably the \textbf{leapfrog}. The idea is to split it into two sections, one part which evolves $dx$ and the other part which evolves $dp$. Since at any step either $dx$ or $dp$ is zero, the product is trivially zero.
+
+Any Hamiltonian system ideally wants a symplectic integrator: the Hamiltonian Monte Carlo used in pymc also uses symplectic integration for steps.
+
+We define two operators for the gravitational system, one which evolves the kinetic term (the ``kick'', $K$) and one which evolves the position term (the ``drift'', $D$). Each of these is individually phase space preserving, and we apply them in turn.
 
 \begin{align}
  K(\delta t): v_i &\to v + a \delta t \\
@@ -82,13 +118,47 @@ Choosing timestepping schemes which preserve energy is a good idea in computatio
 
 \subsection{Binary Formation}
 
-A common feature of gravitational systems is the formation of binaries. One mechanism is three body interactions. Here one of the objects takes away the angular momentum of the system, leaving the other two bound. If the binary is tight, the timestep needed to evolve it is small, and thus many more forces must be worked out. This is especially wasteful as the evolution of an isolated binary has an analytic solution. Some codes detect isolated binary systems and evolve them forward using the analytic solution. Many high performance codes allow the timesteps for each particle to be set individually, so that the binary does not slow down the whole simulation.
+A common feature of gravitational systems is the formation of binaries. One mechanism is three body interactions. Here one of the objects takes away the angular momentum of the system, leaving the other two bound.
+
+If the binary is tight, the timestep needed to evolve it is small, and thus many more forces must be worked out. This is especially wasteful as the evolution of an isolated binary has an analytic solution. Some codes detect isolated binary systems and evolve them forward using the analytic solution. Many high performance codes allow the timesteps for each particle to be set individually, so that the binary does not slow down the whole simulation. An issue that arises is how to model interactions between particles on different timesteps. For this see the Gadget-4 paper \url{https://arxiv.org/abs/2010.03567}.
 
 \section{Structure Formation}
 
-\subsection{Some Literature}
+For structure formation problems, things are similar, but instead of simulating point particles we are simulating an (almost) uniform density fluid. So the approximation that we made of point particles is no longer good. Why can we still use N-body techniques?
 
+We can extensively use Birkhoff's theorem instead: the gravitation from any distribution of matter can be replaced by a point particle at the center of mass if the angular size is sufficiently small.
+
+This is also the core of the Barnes-Hut tree technique. The idea is that at a large distance from the particle, you can approximate the force from a collection of particles using a 'super-particle'. This means that we don't have to work out as many forces: we build a tree once and then re-use it for every particle.
+
+\subsection{Write our own N-body code}.
+
+Let's now write our own simple N-body code.
+In this problem we will write our own N-body code. You may write in python (or any other language that you prefer), and the code need use only the easiest algorithms.
+
+\begin{itemize}
+ \item Write the code to compute forces. Use direct summation. Use vacuum boundary conditions and just ignore the particles if they leave the box.
+ \item Generate an initial distribution of particles. Give them a velocity, a position and a unique ID. Make a parameter for the number of particles.
+ \item Implement the kick-drift-kick symplectic time integrator for time integration.
+ \item Implement a criterion for the timestep length, scaling like the acceleration. Check how converged the results are with timestep size.
+\end{itemize}
+
+Run this code! You can confirm that it scales as O($N^2$). How quickly are particles lost?
+
+\begin{itemize}
+\item Implement a force tree using the python/scipy kdtree module.
+\end{itemize}
+
+Confirm that the code scales as O($N log N$). How much do the results differ? How do we set the tree opening angle?
+
+\begin{itemize}
+\item Write some code to identify binaries. Once we have identified binaries, mark them as a binary and merge them. Keep track of the mergers and record them, as well as the merging masses.
+\end{itemize}
+
+
+\section{Some Literature}
+Advanced N-body solver: \url{https://rebound.readthedocs.io/en/latest/}
 Springel 2005, Gadget-2: \url{https://arxiv.org/abs/astro-ph/0505010}
 
 Aarseth, Sverre ``Gravitational N-body Simulations'' \url{https://doi.org/10.1017/CBO9780511535246}
+Binney and Tremaine ``Galactic Dynamics'' \url{https://doi.org/10.2307/j.ctvc778ff}
 \end{document}
