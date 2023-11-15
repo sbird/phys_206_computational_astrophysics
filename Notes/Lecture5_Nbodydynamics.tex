@@ -167,4 +167,22 @@ where $\alpha$ is an accuracy parameter around $2 \times 10^{-3}$ and $|a|$ is t
 
 Tree structures are extremely useful in a variety of problems. Implementing this in python requires a tree node data structure containing a list of sub-nodes.
 
+\section{Binary Detection}
+
+We want to detect bound binaries in our code! How can we do that?
+
+Let us first define what we mean by a bound binary: the normal condition is that the kinetic energy is insufficient to escape the gravitational potential. However, we are really interested in a slightly different problem: detection of binary black holes merging by gravitational radiation. The BH pair becomes gravitationally bound if the GW
+emission exceeds the initial kinetic energy. The cross
+section for this process is (See Quinlan et al 1989 or Mouri 2002):
+\begin{eqnarray}
+     \sigma &=& \pi \left( \frac{85\, \pi}{3}
+     \right)^{2/7} R_{s}^2 \left(\frac{v_\mathrm{bh}}{c}\right)^{-18/7}
+\label{eqn:crosssection}
+\end{eqnarray}
+where $R_s$ is the Schwarzchild radius and $v_\mathrm{bh}$ is the relative velocity.
+
+Notice that objects with very low relative velocities may have arbitrarily large $\sigma$. We do not want to detect these chance encounters as binaries, so we must also enforce a maximum separation. In addition, we should avoid 3-body effects, so we should ensure that only the two closest objects are allowed to merge.
+
+We can implement this naively, or we can re-use our OctTree to do neighbour finding.
+
 \end{document}
