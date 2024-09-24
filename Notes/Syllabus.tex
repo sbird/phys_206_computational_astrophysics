@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
+\usepackage{hyperref}
+
+% \setlength{\parindent}{1in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.8in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{18pt}
+
+\newcommand{\Lc}{$\mathcal{L}$}
+
+
+\title{ASTR 206 Syllabus}
+\author{Simeon Bird}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Catalog Description}
+
+General introduction to computational astrophysics, with emphasis on numerical simulations and their application to extragalactic astrophysical problems. Hands-on course designed to learn the basics of set-up, running and analysis of numerical simulations. Topics include: Numerical simulations data products, generation of initial conditions, N-body techniques, hydrodynamical techniques, data visualization.
+
+\section{Course Description}
+
+This course is project-based. Students will work together as a group to develop a simple N-body code, learning modern scientific computing techniques along the way. Certain necessary topics will be taught, described below, but the main portion of the lecture course will be code development, presentation and review sessions. Each week subprojects will be assigned to groups. Students will be nominated as `project' or `group' leaders and at the end of the week will present the progress of their subproject to the class. Code development and class business will use github.
+
+\section{Taught Topics}
+
+\begin{enumerate}
+    \item Introduction to programming, python and git.
+    \item Introduction to N-body dynamics.
+    \item N-body techniques (direct summation, PM grid, oct-tree, etc.).
+    \item Writing good tests.
+    \item N-body effects (relaxation, mass segregation, binary formation).
+    \item Introduction to gas and hydrodynamics.
+    \item A brief introduction to deep learning.
+\end{enumerate}
+
+\section{Course Grading}
+
+\begin{enumerate}
+ \item There will be 1 homework on python debugging, which will be 10\%. of the final grade.
+\item There will be a final presentation, in which all students will participate, which will be 25\% of the final grade.
+\item The rest of the grade will be participation in the weekly code development exercises (30\%) and regular in-class presentations from group leaders (35\%).
+\end{enumerate}
+
+Final grade distributions will be based on a normalised curve where the median score is in the range A- to B+.
+
+
+\section{Collaboration Policy}
+
+Working in groups is encouraged and in some cases required but each class member should contribute fully. Students may be asked to explain or slightly modify your programs during class. Your performance be reflected on the grade of the particular homework/assignment/exam. The work submitted must be your own. Cheating will not be tolerated.
+
+\section{ChatGPT Policy}
+
+The purpose of this class is to teach the skill of scientific software development on a conceptually simple problem. There are many examples of N-body codes freely available on the internet, of varying complexity. In addition, ChatGPT is likely able to generate reasonable solutions, with some prompting, for most of the problems presented. Students should not do this, as it defeats the purpose of the course, which is to teach the process. However, students may use ChatGPT for debugging existing code, provided they think carefully about the answers ChatGPT provides.
+
+% HW Plan
+
+% Week 1: Python introduction problems.
+%
+% Week 2 & 3: Bayesian probability calculations and a PyMC tutorial.
+%
+% Week 4 & 5: Run an N-body simulation with MP-Gadget. Write a small N-body code (in python) and compare the output statistics to that of MP-Gadget.
+%
+% Week 6 & 7: Analyze general properties of halos and subhalos (mass function, radial distribution, satellite mass function). Make beautiful visualizations with Blender.
+%
+% Week 8 & 9: Fit GP emulators for summary statistics on a simulation suite, using PyMC. Fit neural networks.
+%
+% Week 10: Preparation of final projects.
+%
+% The work will be handed to the instructor bi-weekly, in the shape of a written report (.pdf format, if applicable) or programming code (.py, .c or alike) via email or github repository.
+% Course Summary:
+
+\end{document}
