@@ -4,7 +4,7 @@
 \usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
 \usepackage{hyperref}
 
-\setlength{\parindent}{0in}
+% \setlength{\parindent}{0.5in}
 \setlength{\oddsidemargin}{0in}
 \setlength{\textwidth}{6.5in}
 \setlength{\textheight}{8.8in}
@@ -24,12 +24,14 @@
 
 \section{Gravitational Simulations}
 
-This section is about N-Body codes, or the problem of simulating gravitational interactions. An important difference from other types of physical simulations is that gravity is a non-local interaction, which significantly changes the types of simulation models that can be used. We are mostly interested in the problem of simulating structure formation, where an initially uniform density dark matter fluid in an expanding background is allowed to evolve under self-gravity. However, first we should talk about the (slightly different) problem of modelling the evolution of small clusters of stars.
+This section is about N-Body codes, or the problem of simulating gravitational interactions. An important difference from other types of physical simulations is that gravity is a non-local interaction, which significantly changes the types of simulation models that can be used. Note that there are two types of N-body code. One simulates structure formation, where an initially uniform density dark matter fluid in an expanding background is allowed to evolve under self-gravity. We are concerned with the other, which models the evolution of small clusters of stars or black holes.
+
+The first N-body simulation was performed by Eric Holmberg in 1941. The forces were computed using O(N) effort by placing light bulbs in a room and computing accelerations using light fluxes onto a photon cell. The bulbs were then moved by hand.
 
 In this problem:
 
 \begin{enumerate}
- \item Each star is a point particle.
+ \item Each star/BH is a point particle.
  \item The force on each star is given by Newtonian gravity. For particle $j$ the force from other particles $i \neq j$ is:
 \end{enumerate}
 \begin{equation}
@@ -51,8 +53,6 @@ Let's first talk about fast ways to compute the forces. The obvious algorithm is
         acc_j += G M_i / (r_i - r_j)^2
 \end{verbatim}
 but this is slow for large numbers of particles: for N particles this needs $N \times N$ operations and thus is said to be $O(N^2)$. Notice that this notation drops a constant prefactor: it could be $2 N^2$, $3 N^2$, or even $200 N^2$ operations, and it does not count how fast the operation is. Nevertheless, when $N \sim 10^{12}$, the cost is large.
-
-The first N-body simulation was performed by Eric Holmberg in 1941. The forces were computed using O(N) effort by placing light bulbs in a room and computing accelerations using light fluxes onto a photon cell. The bulbs were then moved by hand.
 
 \subsection{Timestepping}
 
@@ -128,37 +128,31 @@ For structure formation problems, things are similar, but instead of simulating 
 
 We can extensively use Birkhoff's theorem instead: the gravitation from any distribution of matter can be replaced by a point particle at the center of mass if the angular size is sufficiently small.
 
-This is also the core of the Barnes-Hut tree technique. The idea is that at a large distance from the particle, you can approximate the force from a collection of particles using a 'super-particle'. This means that we don't have to work out as many forces: we build a tree once and then re-use it for every particle.
-
-\subsection{Write our own N-body code}.
+\section{Write our own N-body code}
 
 Let's now write our own simple N-body code.
-In this problem we will write our own N-body code. You may write in python (or any other language that you prefer), and the code need use only the easiest algorithms.
+You may write in python (or any other language that you prefer), and the code need use only the easiest algorithms.
 
 \begin{itemize}
- \item Write the code to compute forces. Use direct summation. Use vacuum boundary conditions and just ignore the particles if they leave the box.
+ \item Write the code to compute forces. Use direct summation.
  \item Generate an initial distribution of particles. Give them a velocity, a position and a unique ID. Make a parameter for the number of particles.
  \item Implement the kick-drift-kick symplectic time integrator for time integration.
  \item Implement a criterion for the timestep length, scaling like the acceleration. Check how converged the results are with timestep size.
+ \item Implement a test that checks the results against the evolution of a stellar binary.
 \end{itemize}
 
-Run this code! You can confirm that it scales as O($N^2$). How quickly are particles lost?
-
-\begin{itemize}
-\item Implement a force tree using the python/scipy kdtree module.
-\end{itemize}
-
-Confirm that the code scales as O($N log N$). How much do the results differ? How do we set the tree opening angle?
-
-\begin{itemize}
-\item Write some code to identify binaries. Once we have identified binaries, mark them as a binary and merge them. Keep track of the mergers and record them, as well as the merging masses.
-\end{itemize}
-
+Run this code! You can confirm that it scales as O($N^2$).
 
 \section{Some Literature}
-Advanced N-body solver: \url{https://rebound.readthedocs.io/en/latest/}
-Springel 2005, Gadget-2: \url{https://arxiv.org/abs/astro-ph/0505010}
+\begin{itemize}
 
-Aarseth, Sverre ``Gravitational N-body Simulations'' \url{https://doi.org/10.1017/CBO9780511535246}
-Binney and Tremaine ``Galactic Dynamics'' \url{https://doi.org/10.2307/j.ctvc778ff}
+\item Advanced N-body solver: \url{https://rebound.readthedocs.io/en/latest/}
+
+\item Springel 2005, Gadget-2: \url{https://arxiv.org/abs/astro-ph/0505010}
+
+\item Aarseth, Sverre ``Gravitational N-body Simulations'' \url{https://doi.org/10.1017/CBO9780511535246}
+
+\item Binney and Tremaine ``Galactic Dynamics'' \url{https://doi.org/10.2307/j.ctvc778ff}
+\end{itemize}
+
 \end{document}

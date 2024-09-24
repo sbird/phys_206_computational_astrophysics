@@ -7,7 +7,28 @@
 
 \title{PHYS 206 Lecture Notes}
 \author{Simeon Bird}
+\date{}
 \maketitle
+
+\section{Python}
+
+I'm going to mostly assume that you know python already.
+
+\begin{enumerate}
+ \item Use functions: ideally keep them short, 4-5 lines, and make each one have a single purpose.
+ \item Add a docstring to each function. Comment the functions.
+ \item Avoid global variables.
+ \item Use assertions to check that your results are sane.
+ \item Use the standard libraries where possible
+ \item Use tests
+ \item Use keyword arguments liberally for clarity
+ \item Use \_ for functions not intended to be used outside, and for unused variables
+ \item Use pint to automatically check your units
+ \item Write tests, small self-contained functions that run your code and check it gives a consistent answer. A common python testing framework is pytest.
+ \item Try to keep it simple.
+\end{enumerate}
+
+\url{https://docs.google.com/presentation/d/1Dfecu50LLvDp-XADyKf-nAgtgenAGqUk2g3kJ4TNfYQ/edit?usp=sharing}
 
 \section{Version Control}
 
@@ -38,22 +59,13 @@ In git, branches are cheap and easy. This is the main reason git is the leading 
 
 To create a new branch, type ``git branch newname''. To switch to it, use ``git checkout newname'' and to switch back use ``git checkout master''. To incorporate the contents of one branch into the current branch, do ``git merge newname''
 
-\section{Python}
+\section{Github}
 
-I'm going to mostly assume that you know python already.
+Github is a website frontend to git, owned by Microsoft. At the most basic, it provides a remote, searchable, copy of your code, (so that you don't forget where it is on your laptop). It also has features to facilitate collaborative development, the most important of which are:
 
 \begin{enumerate}
- \item Use functions: ideally keep them short, 4-5 lines, and make each one have a single purpose.
- \item Add a docstring to each function. Comment the functions.
- \item Avoid global variables.
- \item Use assertions to check that your results are sane.
- \item Use the standard libraries where possible
- \item Use tests
- \item Use keyword arguments liberally for clarity
- \item Use \_ for functions not intended to be used outside, and for unused variables
- \item Use pint to automatically check your units
- \item Write tests, small self-contained functions that run your code and check it gives a consistent answer. A common python testing framework is pytest.
- \item Try to keep it simple.
+ \item Pull requests: integrate and review new branches.
+ \item Github actions: Automated testing of new code.
 \end{enumerate}
 
 

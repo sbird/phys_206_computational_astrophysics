@@ -70,7 +70,7 @@ so that:
 \begin{align}
  \left|\frac{\Delta v}{v} \right|^2 = 8 \frac{\ln N }{N}
 \end{align}
-So the number of crossings required to change $v$ by O(1) is $n_{relax} = 8 \ln N / N$.
+So the number of crossings required to change $v$ by O(1) is $n_{relax} = \left|v / \Delta v \right|^2  = N / 8 \ln N$.
 We define a \textbf{relaxation time} $t_{relax} = n_{relax} \times t_{cross}$.
 
 So our dynamical time scale for N-body scattering is, using the total mass $M = Nm$:
