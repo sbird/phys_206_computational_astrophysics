@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath,graphicx}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.8in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{18pt}
+
+\newcommand{\Lc}{$\mathcal{L}$}
+
+
+\title{ASTR 206 Lecture Notes}
+\author{Simeon Bird}
+\date{}
+% \date{October 14, 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{The Project}
+
+The main part of this course is The Project: to create a working N-body code. We have a specific science problem in mind: modelling gravitational wave events in a small black hole cluster.
+
+The minimal code should:
+
+\begin{enumerate}
+ \item Accurately evolve the motion of particles under gravity.
+ \item Have some way of visualising results.
+\end{enumerate}
+
+How will we know we have achieved goal 1?
+
+A good way is to ensure that we correctly solve a simpler problem with an analytic solution. Thus we will add a new intermediate requirement:
+
+\begin{enumerate}
+ \item Recover the known analytic solutions for evolution of a binary.
+ \item Accurately evolve the motion of particles under gravity.
+ \item Have some way of visualising results.
+\end{enumerate}
+
+Possible extensions are:
+
+\begin{enumerate}
+ \item Identify objects that are about to merge by GW emission.
+ \item Scale to more than a few hundred objects.
+ \item Include the accretion of gas onto black holes (this one is hard!).
+ \item Have a fancy 3D way of visualising results.
+\end{enumerate}
+
+
+\subsection{Tasks To Do}
+
+\begin{itemize}
+ \item Make project decisions.
+ \item Generate initial particle positions and velocities.
+ \item Compute forces between particles.
+ \item Evolve particles with forces.
+\end{itemize}
+
+How should we decide which algorithms to use? Initially we have only 2 particles.
+
+
+
+\end{document}
