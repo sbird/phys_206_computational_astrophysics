@@ -24,10 +24,17 @@ Create a fork of the repo here: \url{https://github.com/sbird/phys218_example}
 \end{problem}
 
 \begin{problem}{1.1 Cleanups (10)}
-Edit this file: \url{https://github.com/sbird/phys218_example/blob/master/power_specs.py}
-until running pylint on it produces no errors or warnings. You may ignore the warnings of the form W0621: Redefining name 'X' from outer scope (line Y) (redefined-outer-name). You may also ignore ``remarks'' and ``comments''. If code refers to a non-existent method or object you may simply delete it.
+A collaborator has written some messy python:
 
-Hint: You may use search and replace to fix the whitespace issues.
+\url{https://github.com/sbird/phys218_example/blob/master/power_specs.py}
+
+Use the ``ruff'' python linter and checker to clean up and fix the file. You need not run the python file!
+\begin{itemize}
+ \item Remove references to non-existent classes in the main script.
+\item Auto-format the code.
+\item Run ``ruff check power\_spec.py'' until the default checks pass.
+\item Run ``\verb|ruff check --select D|'' and ``\verb|ruff check --select N|'' to observe a variety of code-style checks that fail.
+\end{itemize}
 \end{problem}
 
 \begin{problem}{1.2 Find the bug (6)}
@@ -36,6 +43,8 @@ Three bugs have been introduced in:
 \url{https://github.com/sbird/phys218_example/blob/master/pbhmergers.py}
 
 Find them!
+
+Hint: The final bug is harder to find than the other two.
 \end{problem}
 
 \begin{problem}{1.3 Writing python (10)}
