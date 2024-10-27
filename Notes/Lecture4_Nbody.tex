@@ -110,38 +110,54 @@ We define two operators for the gravitational system, one which evolves the kine
 
 The full timestep is kick-drift-kick, which splits the kick into two and is:
 \begin{align}
- K(\delta t/2) D(\delta t) K(\delta t/2) \\
+K(\delta t/2) D(\delta t) F(x) K(\delta t/2) \\
 \end{align}
-Notice that when the drift is applied the velocity that is used is evaluated at $t + \delta t /2$. It would not be consistent to examine the energy of the system in the middle of the step, as the velocity and positions of the particles are at different times.
 
-Choosing timestepping schemes which preserve energy is a good idea in computational astrophysics. The timestep itself can be set using multiples of the local dynamic time, so that particles with larger acceleration changes have smaller timesteps.
+At each step the position and velocities are at time:
+\begin{align}
+v(t) \to K \to v(t+\delta_t/2) \to &D \to v(t + \delta t/2) \to K \to v(t + \delta t) \\
+x(t) \to K \to x(t) \to &D \to x(t + \delta t) \to K \to x(t + \delta t) \\
+\end{align}
+Note that F commutes with K.
+
+When the drift is applied the velocity that is used is evaluated at $t + \delta t /2$. It would not be consistent to examine the energy of the system in the middle of the step, as the velocity and positions of the particles are at different times.
+
+Choosing timestepping schemes which preserve energy is a good idea in computational astrophysics.
+
+\subsection{Size of Timestep}
+
+What should the timestep $\delta t$ be? We can choose a fixed number initially, but this is dangerous. To see why, remember that the particles move with constant velocity over a timestep. If acceleration is large compared to distance travelled during a timestep, this is inaccurate. The acceleration of a particle may change over the course of a simulation, so an initially `small' timestep may become `large' as the particles evolve. Directly using the ratio of instantaneous acceleration to distance travelled is practically difficult, because we don't know distance travelled before we work out the timestep.
+
+We would like something that includes an acceleration estimate and has dimensions of time, which we can multiply by a dimensionless constant. It is tempting to mandate that the acceleration be small relative to the velocity:
+\begin{equation}
+ \delta t = \eta \frac{a}{v}
+\end{equation}
+where $\eta$ is a small dimensionless constant. However, this is a bad choice because it is not Galilean invariant: a frame boosted with respect to the particles will have a larger timestep. This could matter when, for example, we are simulating the merger of two star clusters.
+
+Instead we can the ratio of the acceleration to the third derivative of the motion, or `jerk' $j$:
+\begin{align}
+ j &= \frac{d a}{dt}  = a' \\
+ \delta t  &= \eta \frac{a}{j} = \eta \frac{a}{a'}
+\end{align}
+However this becomes a bad choice if $a$ is ever constant! It also has poor behaviour near the apocenter of a binary orbit. For this reason, we supplement the equation with functions of the second derivative of the acceleration, $a''$ (`snap'). \url{https://arxiv.org/pdf/2401.02849}.
+\begin{align}
+\delta t &= \eta \left( \left(\frac{a'}{a}\right)^2 + \frac{a''}{a}\right)^{-1/2}
+\end{align}
+To avoid situations where $a \to 0$ for a short time, and the timestep becomes infinite with loss of accuracy, we should also enforce that $\delta t$ can only increase by a factor of $2$ in a single timestep. This equation is still bad when $a'' = a' = 0$, but this much less likely!
+
+Different particles will generically require different timesteps. To ensure the evolution of the system is correct, our simple code can compute $\delta t$ for all particles and use the minimum.
 
 \subsection{Binary Formation}
 
 A common feature of gravitational systems is the formation of binaries. One mechanism is three body interactions. Here one of the objects takes away the angular momentum of the system, leaving the other two bound.
 
-If the binary is tight, the timestep needed to evolve it is small, and thus many more forces must be worked out. This is especially wasteful as the evolution of an isolated binary has an analytic solution. Some codes detect isolated binary systems and evolve them forward using the analytic solution. Many high performance codes allow the timesteps for each particle to be set individually, so that the binary does not slow down the whole simulation. An issue that arises is how to model interactions between particles on different timesteps. For this see the Gadget-4 paper \url{https://arxiv.org/abs/2010.03567}.
+If the binary is tight, the timestep needed to evolve it is small, and thus many more forces must be worked out. This is especially wasteful as the evolution of an isolated binary has an analytic solution. Some codes detect isolated binary systems and evolve them forward using the analytic solution. Many high performance codes allow the timesteps for each particle to be set individually, so that the binary does not slow down the whole simulation.\footnote{An issue that arises is how to model interactions between particles on different timesteps. For this see the Gadget-4 paper \url{https://arxiv.org/abs/2010.03567}.}
 
 \section{Structure Formation}
 
 For structure formation problems, things are similar, but instead of simulating point particles we are simulating an (almost) uniform density fluid. So the approximation that we made of point particles is no longer good. Why can we still use N-body techniques?
 
 We can extensively use Birkhoff's theorem instead: the gravitation from any distribution of matter can be replaced by a point particle at the center of mass if the angular size is sufficiently small.
-
-\section{Write our own N-body code}
-
-Let's now write our own simple N-body code.
-You may write in python (or any other language that you prefer), and the code need use only the easiest algorithms.
-
-\begin{itemize}
- \item Write the code to compute forces. Use direct summation.
- \item Generate an initial distribution of particles. Give them a velocity, a position and a unique ID. Make a parameter for the number of particles.
- \item Implement the kick-drift-kick symplectic time integrator for time integration.
- \item Implement a criterion for the timestep length, scaling like the acceleration. Check how converged the results are with timestep size.
- \item Implement a test that checks the results against the evolution of a stellar binary.
-\end{itemize}
-
-Run this code! You can confirm that it scales as O($N^2$).
 
 \section{Some Literature}
 \begin{itemize}
@@ -153,6 +169,8 @@ Run this code! You can confirm that it scales as O($N^2$).
 \item Aarseth, Sverre ``Gravitational N-body Simulations'' \url{https://doi.org/10.1017/CBO9780511535246}
 
 \item Binney and Tremaine ``Galactic Dynamics'' \url{https://doi.org/10.2307/j.ctvc778ff}
+
+\item Timestepping \url{https://arxiv.org/pdf/2401.02849}
 \end{itemize}
 
 \end{document}
