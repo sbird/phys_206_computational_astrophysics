@@ -130,7 +130,7 @@ What should the timestep $\delta t$ be? We can choose a fixed number initially, 
 
 We would like something that includes an acceleration estimate and has dimensions of time, which we can multiply by a dimensionless constant. It is tempting to mandate that the acceleration be small relative to the velocity:
 \begin{equation}
- \delta t = \eta \frac{a}{v}
+ \delta t = \eta \frac{v}{a}
 \end{equation}
 where $\eta$ is a small dimensionless constant. However, this is a bad choice because it is not Galilean invariant: a frame boosted with respect to the particles will have a larger timestep. This could matter when, for example, we are simulating the merger of two star clusters.
 

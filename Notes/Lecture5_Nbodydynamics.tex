@@ -43,12 +43,13 @@ Figure~\ref{fig:close} shows an example perturbation, where a test star passes c
  F &= \frac{G m^2}{b^2 + x^2} \cos \theta = \frac{G m^2 b}{(b^2 + x^2)^{3/2}} \\
  &\approx \frac{Gm^2}{b} \left( 1 + \left(\frac{v t}{b}\right)^2\right)^{-3/2} = m \dot{v}
 \end{align}
-So we can estimate a change in $v$, $\delta v$, as (defining $s = v t / b$):
+So we can estimate a change in $v$, $\delta v$. The integration limits are infinity, as we are approximating the other stars as being much further away than $b$. Defining $s = v t / b$:
 
 \begin{align}
-\delta v = \frac{G m}{b^2} \int^\infty_{-\infty} \frac{b}{v} (1 + s^2)^{-3/2} ds = 2\frac{G m}{b v}
+\delta v &= \frac{G m}{b^2} \int^\infty_{-\infty} (1 + (vt/b)^2)^{-3/2} dt \\
+&= \frac{G m}{b^2} \int^\infty_{-\infty} \frac{b}{v} (1 + s^2)^{-3/2} ds \\
+&= 2\frac{G m}{b v}
 \end{align}
-The integration limits are infinity, as we are approximating the other stars as being much further away than $b$.
 
 We also need to work out how many such encounters a random perturber will feel. We can assume that stars are randomly distributed with a uniform density. Since the galaxy has radius $R$, we define $\rho = N / (\pi R^2)$. So the average number of encounters at impact parameter $b$ is:
 \begin{align}
